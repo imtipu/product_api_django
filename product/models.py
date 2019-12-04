@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -27,6 +28,9 @@ class Product(models.Model):
 
     def __unicode__(self):
         return u'%s' % self.title
+
+    def get_absolute_url(self):
+        return reverse('api_product_details', args=(self.pk,))
 
     def save(self, *args, **kwargs):
         if self.slug:

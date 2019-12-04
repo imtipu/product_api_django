@@ -58,7 +58,8 @@ class AddProduct(APIView):
 class ProductList(ListAPIView):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-
+    authentication_classes = []
+    permission_classes = [AllowAny, ]
 
 class ProductDetails(APIView):
 
@@ -69,8 +70,45 @@ class ProductDetails(APIView):
 
 
 class ProductAttributes(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny, ]
     def get(self, request, pk):
         attributes = AttributeVariants.objects.filter(product=pk)
         serializer = AttributeVariantsSerializer(attributes, many=True)
         return Response(serializer.data)
+
+
+class ProductUpdate(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny, ]
+
+    def patch(self, request, pk):
+        data = request.data
+        # return Response(data)
+        qs = Product.objects.get(pk=pk)
+        print(pk)
+        serializer = ProductSerializer(qs, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AttributeUpdate(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny, ]
+
+    def patch(self, request, pk):
+        data = request.data
+        # return Response(data)
+        qs = AttributeVariants.objects.get(pk=pk)
+        print(pk)
+        serializer = AttributeVariantsSerializer(qs, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 

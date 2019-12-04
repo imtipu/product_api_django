@@ -1,3 +1,4 @@
+from django.urls import reverse
 from rest_framework import serializers
 
 from .models import *
@@ -5,6 +6,7 @@ from .models import *
 
 class ProductSerializer(serializers.ModelSerializer):
     attributes = serializers.SerializerMethodField(method_name='get_attributes')
+    product_url = serializers.SerializerMethodField(method_name='get_product_url')
     price_with_currency = serializers.SerializerMethodField(method_name='get_price_with_currency')
 
     class Meta:
@@ -13,6 +15,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'pk',
             'title',
             'slug',
+            'product_url',
             'price',
             'price_with_currency',
             'currency',
@@ -25,6 +28,9 @@ class ProductSerializer(serializers.ModelSerializer):
                 'read_only': True,
             }
         }
+
+    def get_product_url(self, instance):
+        return str(instance.get_absolute_url())
 
     def get_attributes(self, instance):
         variants = AttributeVariants.objects.filter(product=instance.id)
@@ -43,6 +49,7 @@ class AttributeVariantsSerializer(serializers.ModelSerializer):
     class Meta:
         model = AttributeVariants
         fields = [
+            'pk',
             'product',
             'type',
             'name',
