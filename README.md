@@ -11,14 +11,15 @@ Commands \
 `python manage.py createsuperuser` create super user
 
 API URLs \
-`/products/add/` add new product \
-`/products/list/` product list with pagination \
-`/products/{id}/` get product details \
-`/products/{id}/update/` product update {patch} \
-`/products/{id}/attributes/` get product attributes/variants \
-`/products/attributes/{id}/update/` attribute update patch
+`/products/` {{POST}} add new product \
+`/products/` {{GET}} product list with pagination \
+`/products/{id}/` {{GET}} {{DELETE}} {{PATCH}} {{UPDATE}} get product details \
+`/product/{p_id}/attributes/` {{GET}} get single product attributes/variants \
+`/product/{p_id}/attributes/{a_id}/` {{GET}} get single product single attribute/variant, {{DELETE}} {{PATCH}} {{UPDATE}} \
 
-Add Product JSON Format 
+`filters enabled` you can filters and search. For attributes you can filter with `price_lt` and `price_gt`
+
+Add Product JSON Format `{{POST}} => Create`
 ```
 {
   "title": "T-Shirt",

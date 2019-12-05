@@ -1,5 +1,8 @@
 from django.urls import reverse
 from rest_framework import serializers
+from rest_framework.relations import HyperlinkedIdentityField
+from rest_framework.serializers import HyperlinkedModelSerializer
+from rest_framework_nested.relations import *
 
 from .models import *
 
@@ -28,6 +31,7 @@ class ProductSerializer(serializers.ModelSerializer):
                 'read_only': True,
             }
         }
+
 
     def get_product_url(self, instance):
         return str(instance.get_absolute_url())
